@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Чеклист Анализа Нового Листинга</title>
+    <!-- Pico.css CDN -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"/>
+    <!-- Prism.js Okaidia Theme CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Prism.js Toolbar CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/toolbar/prism-toolbar.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Prism.js Show Language Plugin CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/show-language/prism-show-language.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <style>
+        /* Стили из template-24.html, кроме стилей для chart */
+        :root {
+            --pico-color-grey-900: #212529;
+            --pico-color-grey-800: #282c34;
+            --pico-color-grey-700: #495057;
+            --pico-color-grey-600: #adb5bd;
+            --pico-color-grey-500: #ced4da;
+        }
+
+        body {
+            background-color: var(--pico-color-grey-900);
+            color: var(--pico-color-grey-500);
+            font-size: 90%; /* Уменьшаем базовый размер шрифта */
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            color: #ffffff;
+        }
+
+        pre[class*="language-"] {
+            background-color: var(--pico-color-grey-800);
+            border: 1px solid var(--pico-color-grey-700);
+            border-radius: var(--pico-border-radius);
+            padding: 1em;
+            margin: 1em 0;
+            overflow: auto;
+            position: relative;
+        }
+
+        pre[class*="language-"] > code[class*="language-"] {
+            background: none;
+            padding: 0;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+
+        :not(pre) > code {
+            background-color: var(--pico-color-grey-800);
+            color: #f8f8f2;
+            padding: 0.2em 0.4em;
+            border-radius: var(--pico-border-radius);
+            font-family: var(--pico-font-family-monospace);
+            font-size: 0.9em;
+        }
+
+        div.code-toolbar > .toolbar .toolbar-item > button {
+            background: var(--pico-color-grey-700);
+            color: var(--pico-color-grey-200);
+            border: 1px solid var(--pico-color-grey-600);
+            box-shadow: none;
+            border-radius: var(--pico-border-radius);
+            padding: 0.3em 0.6em;
+            font-size: 0.8em;
+            transition: background-color 0.2s ease, border-color 0.2s ease;
+            cursor: pointer;
+        }
+        div.code-toolbar > .toolbar .toolbar-item > button:hover {
+            background: var(--pico-color-grey-600);
+            border-color: var(--pico-color-grey-500);
+        }
+        div.code-toolbar > .toolbar .toolbar-item > button:active {
+            background: var(--pico-color-grey-500);
+        }
+        div.code-toolbar > .toolbar .toolbar-item > button:focus {
+             box-shadow: 0 0 0 var(--pico-outline-width) var(--pico-primary-focus);
+             border-color: var(--pico-primary-focus);
+        }
+        div.code-toolbar > .toolbar .toolbar-item > button.copied {
+             background: var(--pico-success);
+             color: var(--pico-success-inverse);
+        }
+
+        div.code-toolbar > .toolbar .toolbar-item.language-label span {
+             background: var(--pico-secondary);
+             color: var(--pico-secondary-inverse);
+             padding: 0.2em 0.5em;
+             border-radius: var(--pico-border-radius);
+             font-size: 0.75em;
+             font-weight: bold;
+             text-transform: uppercase;
+             box-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+        }
+
+        blockquote {
+            border-left: 4px solid var(--pico-primary);
+            background-color: var(--pico-color-grey-800);
+            padding: 1em 1.5em;
+            margin-left: 0;
+            margin-right: 0;
+            color: var(--pico-color-grey-500);
+        }
+
+        blockquote p {
+            margin-bottom: 0;
+        }
+
+        /* Стили для чек-листа */
+        .checklist ul {
+            list-style: none; /* Оставляем без стандартных маркеров */
+            padding-left: 1.5em; /* Добавляем отступ для всего списка */
+            margin-top: 0.5em; /* Небольшой отступ сверху */
+        }
+        .checklist li {
+            /* Убираем стили для кастомного маркера */
+            margin-bottom: 0.8em;
+            line-height: 1.6;
+        }
+        /* Удаляем псевдоэлемент ::before */
+
+        .checklist li strong {
+            color: var(--pico-color-grey-300);
+            display: inline-block; /* Оставляем для выравнивания */
+            min-width: 220px; /* Выравнивание по ширине */
+            margin-right: 0.5em; /* Отступ справа */
+        }
+        .checklist li code { /* Стиль для плейсхолдеров */
+            color: var(--pico-color-grey-600);
+            font-style: italic;
+            background-color: transparent; /* Убираем фон для плейсхолдеров */
+            padding: 0;
+        }
+        .checklist h3 {
+            margin-top: 2em;
+            margin-bottom: 1em;
+            border-bottom: 1px solid var(--pico-color-grey-700);
+            padding-bottom: 0.3em;
+        }
+         .checklist h4 {
+            margin-top: 1.5em;
+            margin-bottom: 0.8em;
+            color: var(--pico-color-grey-300);
+        }
+        .checklist ul ul { /* Вложенные списки */
+             padding-left: 1.5em;
+             margin-top: 0.5em;
+        }
+         .checklist ul ul li strong {
+             min-width: auto; /* Убираем мин. ширину для вложенных */
+         }
+
+        /* Стиль для блока с поисковыми запросами */
+        .search-queries pre {
+             padding-top: 2.5em; /* Больше места сверху для заголовка */
+             margin-top: 2em;
+        }
+        .search-queries pre::before { /* Заголовок для блока запросов */
+            content: 'Примеры Поисковых Запросов';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            background-color: var(--pico-secondary);
+            color: var(--pico-secondary-inverse);
+            font-size: 0.8em;
+            font-weight: bold;
+            padding: 0.4em 1em;
+            border-radius: var(--pico-border-radius) var(--pico-border-radius) 0 0;
+            text-transform: uppercase;
+            text-align: center;
+        }
+
+    </style>
+</head>
+<body>
+    <main class="container">
+        <h1>Анализа Нового Листинга</h1>
+
+        <article class="prompt-block">
+            <h2>Промпт</h2>
+            <pre><code class="language-none">Ты - продвинутая LLM-модель для глубокого анализа криптопроектов (DeepSearch LLM). Твоя задача - провести комплексный анализ нового или недавно залистенного криптопроекта на основе предоставленной информации и дополнительных данных, которые ты сможешь найти в интернете, включая специализированные крипто-ресурсы, новостные сайты, социальные сети и блокчейн-эксплореры.
+
+**Входные данные:**
+
+*   **PROJECT_NAME:** "[Название Проекта]" (Например: ZetaChain, Starknet, Dymension)
+*   **COIN_TICKER:** "[Тикер Монеты]" (Например: ZETA, STRK, DYM)
+*	**CRYPTORUNK:** "[ссылка на CRYPTORUNK]"
+*   **URL_LIST:** [
+    "[ссылка на официальный сайт]",
+    "[ссылка на Whitepaper/Litepaper, если есть]",
+    "[ссылка на анонс листинга на бирже]",
+    "[ссылка на основной Twitter/X аккаунт проекта]",
+    "[другие релевантные ссылки, например, на страницу с токеномикой, анонс Airdrop, страницу на CoinMarketCap/CoinGecko, если уже есть]"
+    ]
+
+** Изветсная информация **
+* **ПРЕМАРКЕТ** "Премаркет проходил средняя цена 15$:
+* **КОНКУРЕНТЫ** "известный конкурент с FDV 200 млн$"
+
+**Инструкции по анализу:**
+
+Проведи анализ по следующим пунктам, используя предоставленные ссылки как отправную точку, но активно ищи дополнительную релевантную информацию в интернете (новостные агрегаторы типа Cointelegraph/CoinDesk/TheBlock, аналитические платформы типа Messari/Dove Metrics/DefiLlama, агрегаторы данных типа CoinMarketCap/CoinGecko, платформы премаркета типа Whales Market/Aevo, социальные сети типа Twitter/Reddit, блокчейн-эксплореры для проверки контрактов и распределения токенов).
+
+**Требуемый формат ответа:**
+
+Предоставь результат СТРОГО в следующем структурированном формате, заполняя каждый пункт на основе найденной информации. Если информация недоступна, укажи "Нет данных".
+
+---
+
+**Анализ Проекта: [Название Проекта] ([Тикер Монеты])**
+
+**1. Общая информация:**
+    *   **Краткое описание проекта:** (Что делает проект, какую проблему решает?)
+    *   **Блокчейн/Платформа:** (На каком блокчейне работает или это собственный?)
+    *   **Основные Утилити Токена ([Тикер Монеты]):** (Для чего используется токен? Управление, стейкинг, газ, другое?)
+    *   **Total Supply:** (Общее максимальное количество токенов)
+    *   **Circulating Supply на момент листинга (или текущий, если после листинга):** (Количество токенов в обороте)
+    *   **График разлоков (Vesting):** (Краткое описание ключевых разлоков для команды/инвесторов/фонда - ближайшие важные даты/периоды)
+    *   **Аудиты безопасности:** (Проводились ли, кем?)
+
+**2. Инвесторы:**
+    *   **Ключевые фонды/инвесторы (Backers):** (Перечислить наиболее известные фонды, указать их тир по возможности: Tier-1, Tier-2, Tier-3)
+    *   **Суммы инвестиций (если публично):** (Общая сумма собранных средств или по раундам)
+    *   **Цена на ранних раундах (Seed/Private/Public Sale, если есть данные):** (Указать цены, если информация доступна)
+
+**3. Премаркет и Airdrop:**
+    *   **Наличие премаркет-торговли:** (Да/Нет. Если Да, на каких платформах и примерный ценовой диапазон?) Информацию о премаркет торговле необхзодимо искать в интеренете, хотя бы наличие премаркета в идеале цену на текущий момент
+    *   **Наличие/планы Airdrop:** (Да/Нет. Если Да, основные критерии получения и объем распределяемых токенов (% от общего предложения или количество))
+    *   **Влияние Airdrop/Премаркета на старт:** (Оценка потенциального давления продавцов из-за Airdrop или большой разницы цен премаркета/ранних раундов с ценой листинга)
+
+**4. Конкуренты:**
+    *   **Основные конкуренты:** (Перечислить 2-3 главных конкурента)
+    *   **Сравнение (по возможности):**
+        *   **FDV [Тикер Монеты] (оценка):** (Рассчитать или найти оценку Fully Diluted Valuation на основе цены листинга/текущей цены и Total Supply)
+        *   **FDV конкурентов:** (Указать FDV для сравнения)
+        *   **Market Cap [Тикер Монеты] (оценка):** (Рассчитать или найти оценку Market Cap на основе цены листинга/текущей цены и Circulating Supply)
+        *   **Market Cap конкурентов:** (Указать Market Cap для сравнения)
+    *   **Ключевые отличия/преимущества [Название Проекта]:** (Чем проект выделяется на фоне конкурентов?)
+
+**5. Новости (позитивные и негативные):**
+    *   **Ключевые позитивные новости/анонсы:** (Партнерства, достижения роадмапа, листинги на других биржах, технологические обновления)
+    *   **Ключевые негативные новости/FUD/Критика:** (Проблемы безопасности, критика токеномики, сомнения в команде, регуляторные риски, общая критика в сообществе)
+    *   **Общий сентимент (настроение):** (Оценка общего настроения вокруг проекта в медиа и сообществе - Хайп / Позитив / Нейтрально / Негатив / FUD)
+
+---
+
+**Сводная Таблица:**
+
+| Метрика         | Значение/Оценка | Комментарий                                     |
+|-----------------|-----------------|-------------------------------------------------|
+| IDO             | [Да/Нет, X иксов] | Сколько привлекли (если был)                    |
+| IEO             | [Да/Нет, X иксов] | Сколько привлекли (если был)                    |
+| Investors       | [Оценка Tier]   | Надежность фондов (на основании cryptorank.com) |
+| Premarkets      | [Да/Нет, Цена]  | Цена, если найдется                              |
+| FDV             | [{FDV}]         | Fully Diluted Valuation                         |
+| Initial Supply  | [{initial supply}]| Начальное циркулирующее предложение             |
+
+---
+
+Будь объективным, указывай источники, если это возможно для ключевых данных (особенно для цен, инвестиций, объемов Airdrop), и отмечай, если какая-то информация недоступна или является оценочной. Цель - получить структурированную выжимку ключевой информации для быстрой оценки проекта.</code></pre>
+        </article>
+
+        <p><strong>Цель:</strong> Оценить потенциал и риски новой монеты, выходящей на биржу, на основе фундаментальных, токеномических и рыночных факторов.</p>
+
+        <h2>План Анализа</h2>
+        <ol>
+            <li>Сбор Базовой Информации: Получение основных данных о проекте.</li>
+            <li>Анализ Токеномики: Изучение экономики токена (ключевой этап!).</li>
+            <li>Анализ Пре-листинговой Активности: Понимание того, что происходило до выхода на биржу.</li>
+            <li>Исследование Команды и Инвесторов: Оценка надежности и поддержки проекта.</li>
+            <li>Анализ Продукта и Технологии: Понимание сути проекта и его перспектив.</li>
+            <li>Рыночный Анализ и Конкуренты: Определение места проекта на рынке.</li>
+            <li>Анализ Сообщества и Медиа: Оценка настроений и освещения в СМИ.</li>
+            <li>Оценка Рисков: Выявление потенциальных проблем и красных флагов.</li>
+            <li>Синтез и Выводы: Формирование общего мнения и стратегии.</li>
+        </ol>
+
+        <article class="checklist">
+            <h2>Чеклист для Анализа</h2>
+            <p><em>(Заполняйте по каждому пункту для анализируемой монеты)</em></p>
+
+            <h3>1. Базовая Информация</h3>
+            <ul>
+                <li><strong>Название монеты и тикер:</strong><code>[Название] ([ТИКЕР])</code></li>
+                <li><strong>Биржа(и) листинга:</strong><code>[Название биржи(бирж)]</code></li>
+                <li><strong>Дата и время листинга:</strong><code>[Дата, Время (с часовым поясом)]</code></li>
+                <li><strong>Официальный сайт:</strong><code>[URL]</code> (Проверить актуальность и качество)</li>
+                <li><strong>Whitepaper / Litepaper:</strong><code>[URL или статус наличия]</code> (Прочитать ключевые разделы: проблема, решение, токеномика, команда, роадмап)</li>
+                <li><strong>Блокчейн / Платформа:</strong><code>[Например, Ethereum (ERC-20), Solana, собственный блокчейн и т.д.]</code></li>
+                <li><strong>Краткое описание проекта (1-2 предложения):</strong><code>[Что делает проект?]</code></li>
+            </ul>
+
+            <h3>2. Токеномика (Критически Важно!)</h3>
+             <ul>
+                <li><strong>Total Supply (Общее Предложение):</strong><code>[Количество]</code> (Максимальное количество монет, которое когда-либо будет существовать. Важно: фиксированное или инфляционное?)</li>
+                <li><strong>Circulating Supply на момент листинга:</strong><code>[Количество]</code> (Сколько монет будет доступно для торговли СРАЗУ после листинга? Это ключевой фактор для начального давления на цену).</li>
+                <li><strong>Источник информации (Circ. Supply):</strong><code>[Биржа, анонс проекта, др.]</code></li>
+                <li><strong>Max Supply (Максимальное Предложение):</strong><code>[Количество, если отличается от Total Supply и ограничено]</code></li>
+                <li><strong>Утилити токена (Назначение):</strong><code>[Для чего нужен токен? Управление, стейкинг, оплата комиссий, доступ к услугам, другое?]</code> (Есть ли реальная потребность в токене?)</li>
+                <li><strong>Распределение токенов (Allocation):</strong>
+                    <ul>
+                        <li><strong>Команда:</strong><code>[%]</code></li>
+                        <li><strong>Инвесторы (seed, private, strategic):</strong><code>[%]</code></li>
+                        <li><strong>Публичная продажа (ICO/IDO/IEO):</strong><code>[%]</code></li>
+                        <li><strong>Резерв/Фонд:</strong><code>[%]</code></li>
+                        <li><strong>Маркетинг/Партнерства:</strong><code>[%]</code></li>
+                        <li><strong>Награды сообществу/Экосистеме (включая Airdrop):</strong><code>[%]</code></li>
+                        <li><strong>Стейкинг/Награды за ликвидность:</strong><code>[%]</code></li>
+                    </ul>
+                </li>
+                 <li><strong>Вестинг (Vesting Schedules):</strong>
+                    <ul>
+                        <li><strong>График разблокировки для команды:</strong><code>[Условия и сроки]</code></li>
+                        <li><strong>График разблокировки для инвесторов:</strong><code>[Условия и сроки]</code> (Ключевой момент для понимания будущего давления продавцов!)</li>
+                    </ul>
+                 </li>
+                <li><strong>Механизмы инфляции/дефляции:</strong><code>[Есть ли сжигание токенов, как генерируются новые токены (стейкинг, минтинг)?]</code></li>
+            </ul>
+
+            <h3>3. Пре-листинговая Активность</h3>
+            <ul>
+                <li><strong>Был ли Presale / Private Sale / IDO / ICO?</strong><code>[Да/Нет]</code></li>
+                <li><strong>Цена на ранних раундах:</strong><code>[Цена(ы)]</code> (Дает понимание, по какой цене заходили ранние инвесторы).</li>
+                <li><strong>Собрано средств:</strong><code>[$ Сумма]</code> (Если информация доступна).</li>
+                <li><strong>Был ли Премаркет (Pre-market trading)?</strong><code>[Да/Нет]</code> (Торговля до официального листинга, например, на Whales Market, Aevo и т.д.)</li>
+                <li><strong>Цена на премаркете:</strong><code>[Диапазон цен]</code> (Осторожно: объемы часто низкие, цена может быть манипулятивной, но дает ориентир).</li>
+                <li><strong>Будет ли / Был ли Airdrop для комьюнити?</strong><code>[Да/Нет]</code></li>
+                <li><strong>Объем Airdrop (сколько токенов):</strong><code>[Количество или % от Supply]</code></li>
+                <li><strong>Условия получения Airdrop:</strong><code>[Кто и за что получил?]</code> (Влияет на начальное циркулирующее предложение и может создать давление продавцов).</li>
+            </ul>
+
+            <h3>4. Команда и Инвесторы</h3>
+             <ul>
+                <li><strong>Публичность команды (doxxed)?</strong><code>[Да/Нет]</code></li>
+                <li><strong>Опыт основателей и ключевых членов:</strong><code>[Краткая оценка, релевантный опыт, репутация. Проверить LinkedIn.]</code></li>
+                <li><strong>Инвесторы (Backers / VCs):</strong><code>[Перечислить фонды]</code></li>
+                <li><strong>Уровень фондов (Tier-1, Tier-2, Tier-3)?</strong><code>[Оценка]</code> (Tier-1: a16z, Paradigm, Sequoia, Binance Labs, Coinbase Ventures и т.д.)</li>
+                <li><strong>Репутация инвесторов:</strong><code>[Положительная/Смешанная/Негативная]</code></li>
+                <li><strong>Информация о суммах инвестиций:</strong><code>[Да/Нет, Сумма если есть]</code></li>
+            </ul>
+
+            <h3>5. Продукт и Технология</h3>
+            <ul>
+                <li><strong>Решаемая проблема:</strong><code>[Какую проблему решает проект?]</code></li>
+                <li><strong>Продукт/Технология:</strong><code>[Насколько инновационно? Есть ли MVP/рабочий продукт? Техническая документация? Аудит смарт-контрактов?]</code> (Проверить наличие аудитов от известных фирм: Certik, Halborn, Quantstamp и т.д.).</li>
+                <li><strong>Roadmap (Дорожная карта):</strong><code>[Наличие, четкость, реалистичность, выполненные этапы]</code></li>
+                <li><strong>Активность на GitHub (если применимо):</strong><code>[URL репозитория, частота коммитов, количество разработчиков]</code> (Показывает реальную разработку).</li>
+            </ul>
+
+            <h3>6. Рыночный Анализ и Конкуренты</h3>
+            <ul>
+                <li><strong>Основные конкуренты:</strong><code>[Перечислить 2-3 конкурента]</code></li>
+                <li><strong>Сравнение с конкурентами:</strong>
+                    <ul>
+                        <li><strong>FDV (Fully Diluted Valuation):</strong><code>[Расчет = (Цена) * (Total/Max Supply)]</code> Сравнить с FDV конкурентов.</li>
+                        <li><strong>Market Cap (Рыночная Капитализация):</strong><code>[Расчет = (Цена) * (Circulating Supply)]</code> Сравнить с Market Cap конкурентов.</li>
+                    </ul>
+                </li>
+                <li><strong>Ключевые отличия / УТП:</strong><code>[Чем проект лучше/отличается от конкурентов?]</code></li>
+            </ul>
+
+            <h3>7. Сообщество и Медиа</h3>
+            <ul>
+                <li><strong>Twitter:</strong><code>[Кол-во подписчиков, активность, качество обсуждений, настроение]</code></li>
+                <li><strong>Telegram / Discord:</strong><code>[Кол-во участников, активность, качество обсуждений, настроение, наличие ботов]</code></li>
+                <li><strong>Позитивные новости:</strong><code>[Краткое описание]</code></li>
+                <li><strong>Негативные новости / FUD:</strong><code>[Краткое описание]</code></li>
+                <li><strong>Тон освещения:</strong><code>[Нейтральный, хайповый, критический]</code></li>
+                <li><strong>Общее настроение (Sentiment):</strong><code>[Очень позитивное, скорее позитивное, нейтральное, скорее негативное, негативное]</code></li>
+            </ul>
+
+             <h3>8. Оценка Рисков</h3>
+            <ul>
+                <li><strong>Красные флаги (Red Flags):</strong><code>[Анонимная команда, нереалистичные обещания, отсутствие аудитов, плохая токеномика, история скама у команды/советников, слишком большая доля у команды/ранних инвесторов с коротким вестингом, низкий % токенов в циркуляции на старте и т.д.]</code></li>
+                <li><strong>Потенциальное давление продавцов:</strong><code>[Высокий объем Airdrop, скорые разблокировки токенов инвесторов/команды, большая разница между ценой presale и листинга]</code></li>
+                <li><strong>Рыночные риски:</strong><code>[Общее состояние рынка (бычий/медвежий), волатильность]</code></li>
+                <li><strong>Технологические риски:</strong><code>[Уязвимости смарт-контрактов, проблемы масштабирования]</code></li>
+                <li><strong>Регуляторные риски:</strong><code>[Потенциальные проблемы с регуляторами в ключевых юрисдикциях]</code></li>
+            </ul>
+
+            <h3>9. Синтез и Выводы</h3>
+            <ul>
+                <li><strong>Ключевые сильные стороны:</strong><code>[1-3 пункта]</code></li>
+                <li><strong>Ключевые слабые стороны / риски:</strong><code>[1-3 пункта]</code></li>
+                <li><strong>Оценка потенциала (краткосрочный / долгосрочный):</strong><code>[Ваша субъективная оценка]</code></li>
+                <li><strong>Решение:</strong><code>[Купить на листинге / Подождать падения / Купить позже / Пропустить]</code></li>
+            </ul>
+        </article>
+
+        <article class="search-queries">
+            <h2>Запросы для Поиска Информации</h2>
+            <pre><code class="language-none"># Общая информация:
+[Project Name] official website
+[Project Name] whitepaper
+[Project Name] tokenomics
+[Project Name] roadmap
+[Project Name] team
+[Coin Ticker] coinmarketcap
+[Coin Ticker] coingecko
+
+# Инвесторы:
+[Project Name] investors
+[Project Name] funding rounds
+[Project Name] backers
+[Project Name] crunchbase
+[Project Name] messari
+[Project Name] dove metrics
+
+# Премаркет и Airdrop:
+[Coin Ticker] pre-market price
+[Project Name] pre-market trading
+[Project Name] airdrop criteria
+[Project Name] airdrop details
+[Project Name] presale price
+[Project Name] IDO price
+
+# Конкуренты:
+[Project Name] competitors
+alternative to [Project Name]
+[Project Sector, e.g., "DeFi lending", "Layer 2 scaling"] platforms list
+# Искать на CoinMarketCap/CoinGecko в соответствующей категории.
+
+# Новости (позитивные и негативные):
+[Project Name] news
+[Project Name] review
+[Project Name] partnership
+[Project Name] audit
+[Project Name] scam
+[Project Name] FUD
+[Project Name] problems
+# Использовать поиск в Twitter с тикером ($[Coin Ticker]) или названием.
+# Проверять новостные агрегаторы (Cointelegraph, CoinDesk, The Block, Decrypt и др.).
+# Искать на YouTube обзоры (осторожно, много предвзятых).</code></pre>
+        </article>
+
+    </main>
+
+    <!-- Prism.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!-- Prism.js Autoloader Plugin -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!-- Prism.js Toolbar Plugin -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/toolbar/prism-toolbar.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!-- Prism.js Show Language Plugin -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/show-language/prism-show-language.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!-- Prism.js Copy to Clipboard Button Plugin -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+</body>
+</html>

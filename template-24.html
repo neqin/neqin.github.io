@@ -4,48 +4,49 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex, nofollow">
-    <title>Базовый шаблон с подсветкой кода</title>
+    <title>Базовый шаблон с подсветкой кода и диаграммой</title>
     <!-- Pico.css CDN -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"/>
     <!-- Prism.js Okaidia Theme CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css" integrity="sha512-mIs9kKbaw6JZFfSuo+MovjU+Ntggfoj8RwAmJbVXQ5mkAX5LlgETQEweFPI18humSPHymTb5iikEOKWF7I8ncQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <!-- Prism.js Toolbar CSS (needed for plugins like copy button) -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/toolbar/prism-toolbar.min.css" integrity="sha512-DSAA0ziYwggOJ3QyWF+l5WHuYkQ7MVIb7Bpk8N3h9qB94hS4rFvsABQKVwBYJbKzEV7M9zY7MImnVvAEoOBzMA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Prism.js Toolbar CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/toolbar/prism-toolbar.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <!-- Prism.js Show Language Plugin CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/show-language/prism-show-language.min.css" integrity="sha512-HAsG1PmcjM9OqFz7VWF/0RqcQc/zB/JUYV6dUjX/7nC8Ue/t98p9QQfB82H/L2gfYX9+f/tyT99a/h7j/7pZKA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/show-language/prism-show-language.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <style>
-        /* Дополнительные стили для улучшения темной темы и блоков кода */
+        /* Дополнительные стили */
         :root {
             --pico-color-grey-900: #212529;
-            --pico-color-grey-800: #282c34; /* Okaidia background for consistency */
+            --pico-color-grey-800: #282c34;
             --pico-color-grey-700: #495057;
             --pico-color-grey-600: #adb5bd;
             --pico-color-grey-500: #ced4da;
+            --chart-grid-color: rgba(206, 212, 218, 0.15); /* Светло-серый с прозрачностью для сетки */
+            --chart-tick-color: var(--pico-color-grey-600); /* Цвет текста осей */
+            --chart-line-color: #6c95c7; /* Синеватый цвет для линии графика */
         }
 
         body {
             background-color: var(--pico-color-grey-900);
             color: var(--pico-color-grey-500);
+            font-size: 90%; /* Уменьшаем базовый размер шрифта */
         }
 
         h1, h2, h3, h4, h5, h6 {
             color: #ffffff;
         }
 
-        /* Стилизация блока кода с использованием переменных Pico и Prism */
-        /* Prism добавляет класс 'line-numbers' если плагин используется */
         pre[class*="language-"] {
             background-color: var(--pico-color-grey-800);
             border: 1px solid var(--pico-color-grey-700);
             border-radius: var(--pico-border-radius);
-            padding: 1em; /* Убираем доп. отступ, плагины разместят элементы */
+            padding: 1em;
             margin: 1em 0;
             overflow: auto;
-            position: relative; /* Необходимо для плагинов Toolbar */
+            position: relative;
         }
 
-        /* Убираем лишние стили для code внутри pre, т.к. Prism их добавляет */
         pre[class*="language-"] > code[class*="language-"] {
             background: none;
             padding: 0;
@@ -53,7 +54,6 @@
             line-height: 1.5;
         }
 
-        /* Стили для инлайн-кода (не в pre) */
         :not(pre) > code {
             background-color: var(--pico-color-grey-800);
             color: #f8f8f2;
@@ -63,34 +63,43 @@
             font-size: 0.9em;
         }
 
-        /* Стилизация кнопки копирования Prism */
         div.code-toolbar > .toolbar .toolbar-item > button {
-            background: var(--pico-primary);
-            color: var(--pico-primary-inverse);
+            background: var(--pico-color-grey-700);
+            color: var(--pico-color-grey-200);
+            border: 1px solid var(--pico-color-grey-600);
             box-shadow: none;
             border-radius: var(--pico-border-radius);
             padding: 0.3em 0.6em;
             font-size: 0.8em;
-            transition: background-color 0.2s ease;
+            transition: background-color 0.2s ease, border-color 0.2s ease;
+            cursor: pointer;
         }
         div.code-toolbar > .toolbar .toolbar-item > button:hover {
-            background: var(--pico-primary-hover);
+            background: var(--pico-color-grey-600);
+            border-color: var(--pico-color-grey-500);
         }
         div.code-toolbar > .toolbar .toolbar-item > button:active {
-            background: var(--pico-primary-active);
+            background: var(--pico-color-grey-500);
         }
         div.code-toolbar > .toolbar .toolbar-item > button:focus {
              box-shadow: 0 0 0 var(--pico-outline-width) var(--pico-primary-focus);
              border-color: var(--pico-primary-focus);
         }
-
-        /* Стилизация индикатора языка Prism */
-        div.code-toolbar > .toolbar .toolbar-item.language-label span {
-             color: var(--pico-color-grey-600);
-             font-size: 0.8em;
-             text-transform: uppercase;
+        div.code-toolbar > .toolbar .toolbar-item > button.copied {
+             background: var(--pico-success);
+             color: var(--pico-success-inverse);
         }
 
+        div.code-toolbar > .toolbar .toolbar-item.language-label span {
+             background: var(--pico-secondary);
+             color: var(--pico-secondary-inverse);
+             padding: 0.2em 0.5em;
+             border-radius: var(--pico-border-radius);
+             font-size: 0.75em;
+             font-weight: bold;
+             text-transform: uppercase;
+             box-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+        }
 
         blockquote {
             border-left: 4px solid var(--pico-primary);
@@ -104,6 +113,59 @@
         blockquote p {
             margin-bottom: 0;
         }
+
+        /* Стили для контейнера диаграммы */
+        .chart-container {
+            background-color: var(--pico-color-grey-800);
+            padding: 1.5em;
+            border-radius: var(--pico-border-radius);
+            border: 1px solid var(--pico-color-grey-700);
+            margin-top: 2em;
+        }
+
+        /* Стили для чек-листа (добавлены из airdrop-checklist.html) */
+        .checklist ul {
+            list-style: none; /* Оставляем без стандартных маркеров */
+            padding-left: 1.5em; /* Добавляем отступ для всего списка */
+            margin-top: 0.5em; /* Небольшой отступ сверху */
+        }
+        .checklist li {
+            /* Убираем стили для кастомного маркера */
+            margin-bottom: 0.8em;
+            line-height: 1.6;
+        }
+        /* Удаляем псевдоэлемент ::before */
+
+        .checklist li strong {
+            color: var(--pico-color-grey-300);
+            display: inline-block; /* Оставляем для выравнивания */
+            min-width: 220px; /* Выравнивание по ширине */
+            margin-right: 0.5em; /* Отступ справа */
+        }
+        .checklist li code { /* Стиль для плейсхолдеров */
+            color: var(--pico-color-grey-600);
+            font-style: italic;
+            background-color: transparent; /* Убираем фон для плейсхолдеров */
+            padding: 0;
+        }
+        .checklist h3 {
+            margin-top: 2em;
+            margin-bottom: 1em;
+            border-bottom: 1px solid var(--pico-color-grey-700);
+            padding-bottom: 0.3em;
+        }
+         .checklist h4 {
+            margin-top: 1.5em;
+            margin-bottom: 0.8em;
+            color: var(--pico-color-grey-300);
+        }
+        .checklist ul ul { /* Вложенные списки */
+             padding-left: 1.5em;
+             margin-top: 0.5em;
+        }
+         .checklist ul ul li strong {
+             min-width: auto; /* Убираем мин. ширину для вложенных */
+         }
     </style>
 </head>
 <body>
@@ -121,7 +183,6 @@
 
         <h3>Пример блока кода на Python</h3>
         <p>Ниже представлен блок кода с подсветкой синтаксиса (Prism.js), индикатором языка и кнопкой копирования:</p>
-        <!-- Атрибут data-language больше не нужен, класс language-python используется плагинами -->
         <pre><code class="language-python"># Пример функции на Python
 import os
 
@@ -140,20 +201,104 @@ if __name__ == '__main__':
     list_files('.')
 </code></pre>
 
+        <h4>Диаграмма годовых данных</h4>
+        <p>Визуализация итоговых значений по годам.</p>
+        <article class="chart-container">
+             <canvas id="yearlyChart"></canvas>
+        </article>
+
         <h4>Еще один заголовок</h4>
         <p>Просто для демонстрации иерархии заголовков.</p>
     </main>
 
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- Prism.js Core JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js" integrity="sha512-9khQRAUBYEJDCDVP2ywQ0LRUbnjL37UKNziQYUHBaV76OLrMTJyPBu6LEjxGJNmjSKhUxlG1spVbIJpkSfnK7w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <!-- Prism.js Autoloader Plugin (loads languages based on class name) -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js" integrity="sha512-SkmBfuA2hqjzEVpmnMt/LINrjop3GKWqsuLSSB3e7iBmYK7JuWw4ldmmxwD9mdm2IRTTi0OxZEqMflMquQNVPA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <!-- Prism.js Toolbar Plugin (Dependency for other plugins) -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/toolbar/prism-toolbar.min.js" integrity="sha512-stWRRTMoEbzrK44PA+N4KiTBxKrTfLpVqR7UoTJBQGElKQDdG3WJ+L/X79cU4h7yU8qG9qgN+gLNWMvQyxKEvA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!-- Prism.js Autoloader Plugin -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!-- Prism.js Toolbar Plugin -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/toolbar/prism-toolbar.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <!-- Prism.js Show Language Plugin -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/show-language/prism-show-language.min.js" integrity="sha512-du+fGf6QDAlcN70rEgTLJKAvk0gZAyH/bUkoLPOl0/3oJDbhXN8m9wN7nNnlsx/jGu/7Q/g+2/G4Z0Av/zQ/jQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/show-language/prism-show-language.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <!-- Prism.js Copy to Clipboard Button Plugin -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js" integrity="sha512-BlSVxuPTLgMrbNJpVzizP/oK0rI8U+9RUQDP+N4bQECpYoYoWAkNYpYv2XtptJbP3dpPqfXPN9WA/zQ0LdTf+w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <!-- Chart Initialization Script -->
+    <script>
+        const ctx = document.getElementById('yearlyChart').getContext('2d');
+
+        // Данные из таблицы
+        const years = [2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025];
+        const totals = [6.10, 6.58, 6.45, 11.36, 12.91, 5.38, 2.52, 4.27, 3.05, 4.91, 8.39, 11.92, 7.42, 9.51, 2.05];
+
+        // Получаем цвета из CSS переменных для стилизации
+        const chartGridColor = getComputedStyle(document.documentElement).getPropertyValue('--chart-grid-color').trim() || 'rgba(206, 212, 218, 0.15)';
+        const chartTickColor = getComputedStyle(document.documentElement).getPropertyValue('--chart-tick-color').trim() || '#adb5bd';
+        const chartLineColor = getComputedStyle(document.documentElement).getPropertyValue('--chart-line-color').trim() || '#6c95c7';
+        const tooltipBgColor = getComputedStyle(document.documentElement).getPropertyValue('--pico-color-grey-800').trim() || '#282c34';
+        const tooltipFontColor = getComputedStyle(document.documentElement).getPropertyValue('--pico-color-grey-500').trim() || '#ced4da';
+
+
+        const yearlyChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: years,
+                datasets: [{
+                    label: 'Всего за год',
+                    data: totals,
+                    borderColor: chartLineColor,
+                    backgroundColor: chartLineColor, // Цвет точек
+                    tension: 0.1, // Небольшое сглаживание линии
+                    borderWidth: 2,
+                    pointRadius: 4,
+                    pointHoverRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top',
+                        labels: {
+                            color: chartTickColor // Цвет текста легенды
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: tooltipBgColor,
+                        titleColor: tooltipFontColor,
+                        bodyColor: tooltipFontColor,
+                        padding: 10,
+                        cornerRadius: 4,
+                        displayColors: false // Не показывать цветной квадратик в тултипе
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: chartGridColor, // Цвет сетки Y
+                            borderColor: chartGridColor // Цвет линии оси Y
+                        },
+                        ticks: {
+                            color: chartTickColor // Цвет текста оси Y
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false, // Убираем вертикальную сетку
+                            borderColor: chartGridColor // Цвет линии оси X
+                        },
+                        ticks: {
+                            color: chartTickColor // Цвет текста оси X
+                        }
+                    }
+                }
+            }
+        });
+    </script>
 
 </body>
 </html>
