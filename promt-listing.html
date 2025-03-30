@@ -14,147 +14,10 @@
     <!-- Prism.js Show Language Plugin CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/show-language/prism-show-language.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
+    <!-- Shared Styles -->
+    <link rel="stylesheet" href="shared-styles.css">
     <style>
-        /* Стили из template-24.html, кроме стилей для chart */
-        :root {
-            --pico-color-grey-900: #212529;
-            --pico-color-grey-800: #282c34;
-            --pico-color-grey-700: #495057;
-            --pico-color-grey-600: #adb5bd;
-            --pico-color-grey-500: #ced4da;
-        }
-
-        body {
-            background-color: var(--pico-color-grey-900);
-            color: var(--pico-color-grey-500);
-            font-size: 90%; /* Уменьшаем базовый размер шрифта */
-        }
-
-        h1, h2, h3, h4, h5, h6 {
-            color: #ffffff;
-        }
-
-        pre[class*="language-"] {
-            background-color: var(--pico-color-grey-800);
-            border: 1px solid var(--pico-color-grey-700);
-            border-radius: var(--pico-border-radius);
-            padding: 1em;
-            margin: 1em 0;
-            overflow: auto;
-            position: relative;
-        }
-
-        pre[class*="language-"] > code[class*="language-"] {
-            background: none;
-            padding: 0;
-            font-size: 0.9em;
-            line-height: 1.5;
-        }
-
-        :not(pre) > code {
-            background-color: var(--pico-color-grey-800);
-            color: #f8f8f2;
-            padding: 0.2em 0.4em;
-            border-radius: var(--pico-border-radius);
-            font-family: var(--pico-font-family-monospace);
-            font-size: 0.9em;
-        }
-
-        div.code-toolbar > .toolbar .toolbar-item > button {
-            background: var(--pico-color-grey-700);
-            color: var(--pico-color-grey-200);
-            border: 1px solid var(--pico-color-grey-600);
-            box-shadow: none;
-            border-radius: var(--pico-border-radius);
-            padding: 0.3em 0.6em;
-            font-size: 0.8em;
-            transition: background-color 0.2s ease, border-color 0.2s ease;
-            cursor: pointer;
-        }
-        div.code-toolbar > .toolbar .toolbar-item > button:hover {
-            background: var(--pico-color-grey-600);
-            border-color: var(--pico-color-grey-500);
-        }
-        div.code-toolbar > .toolbar .toolbar-item > button:active {
-            background: var(--pico-color-grey-500);
-        }
-        div.code-toolbar > .toolbar .toolbar-item > button:focus {
-             box-shadow: 0 0 0 var(--pico-outline-width) var(--pico-primary-focus);
-             border-color: var(--pico-primary-focus);
-        }
-        div.code-toolbar > .toolbar .toolbar-item > button.copied {
-             background: var(--pico-success);
-             color: var(--pico-success-inverse);
-        }
-
-        div.code-toolbar > .toolbar .toolbar-item.language-label span {
-             background: var(--pico-secondary);
-             color: var(--pico-secondary-inverse);
-             padding: 0.2em 0.5em;
-             border-radius: var(--pico-border-radius);
-             font-size: 0.75em;
-             font-weight: bold;
-             text-transform: uppercase;
-             box-shadow: 1px 1px 3px rgba(0,0,0,0.3);
-        }
-
-        blockquote {
-            border-left: 4px solid var(--pico-primary);
-            background-color: var(--pico-color-grey-800);
-            padding: 1em 1.5em;
-            margin-left: 0;
-            margin-right: 0;
-            color: var(--pico-color-grey-500);
-        }
-
-        blockquote p {
-            margin-bottom: 0;
-        }
-
-        /* Стили для чек-листа */
-        .checklist ul {
-            list-style: none; /* Оставляем без стандартных маркеров */
-            padding-left: 1.5em; /* Добавляем отступ для всего списка */
-            margin-top: 0.5em; /* Небольшой отступ сверху */
-        }
-        .checklist li {
-            /* Убираем стили для кастомного маркера */
-            margin-bottom: 0.8em;
-            line-height: 1.6;
-        }
-        /* Удаляем псевдоэлемент ::before */
-
-        .checklist li strong {
-            color: var(--pico-color-grey-300);
-            display: inline-block; /* Оставляем для выравнивания */
-            min-width: 220px; /* Выравнивание по ширине */
-            margin-right: 0.5em; /* Отступ справа */
-        }
-        .checklist li code { /* Стиль для плейсхолдеров */
-            color: var(--pico-color-grey-600);
-            font-style: italic;
-            background-color: transparent; /* Убираем фон для плейсхолдеров */
-            padding: 0;
-        }
-        .checklist h3 {
-            margin-top: 2em;
-            margin-bottom: 1em;
-            border-bottom: 1px solid var(--pico-color-grey-700);
-            padding-bottom: 0.3em;
-        }
-         .checklist h4 {
-            margin-top: 1.5em;
-            margin-bottom: 0.8em;
-            color: var(--pico-color-grey-300);
-        }
-        .checklist ul ul { /* Вложенные списки */
-             padding-left: 1.5em;
-             margin-top: 0.5em;
-        }
-         .checklist ul ul li strong {
-             min-width: auto; /* Убираем мин. ширину для вложенных */
-         }
-
+        /* Unique styles for promt-listing page */
         /* Стиль для блока с поисковыми запросами */
         .search-queries pre {
              padding-top: 2.5em; /* Больше места сверху для заголовка */
@@ -175,11 +38,15 @@
             text-transform: uppercase;
             text-align: center;
         }
-
     </style>
 </head>
 <body>
     <main class="container">
+        <nav class="breadcrumb">
+            <ul>
+                <li><a href="promts.html">← Назад к списку промптов</a></li>
+            </ul>
+        </nav>
         <h1>Анализа Нового Листинга</h1>
 
         <article class="prompt-block">
@@ -188,8 +55,9 @@
 
 **Входные данные:**
 
-*   **PROJECT_NAME:** "[Название Проекта]" (Например: ZetaChain, Starknet, Dymension)
-*   **COIN_TICKER:** "[Тикер Монеты]" (Например: ZETA, STRK, DYM)
+*   **LISTING DATE:** "[Дата листинга]"
+*   **PROJECT_NAME:** "[Название Проекта]"
+*   **COIN_TICKER:** "[Тикер Монеты]"
 *	**CRYPTORUNK:** "[ссылка на CRYPTORUNK]"
 *   **URL_LIST:** [
     "[ссылка на официальный сайт]",
@@ -250,12 +118,13 @@
 
 ---
 
-** Так же составь сводную таблицу по сновным характеристикам ***
+** Так же составь сводную таблицу по основным характеристикам ***
 
 **Сводная таблица проекта:**
 
 | Метрика         | Значение/Оценка | Комментарий                                     |
 |-----------------|-----------------|-------------------------------------------------|
+| Листинг             | + | {Список бирж где будет листинг}                    |
 | IDO             | [Да/Нет, X иксов] | Сколько привлекли (если был)                    |
 | IEO             | [Да/Нет, X иксов] | Сколько привлекли (если был)                    |
 | Investors       | [Оценка Tier]   | Надежность фондов (на основании cryptorank.com) |

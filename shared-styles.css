@@ -1,0 +1,250 @@
+/* Дополнительные стили */
+        :root {
+            --pico-color-grey-900: #212529;
+            --pico-color-grey-800: #282c34;
+            --pico-color-grey-700: #495057;
+            --pico-color-grey-600: #adb5bd;
+            --pico-color-grey-500: #ced4da;
+            --chart-grid-color: rgba(206, 212, 218, 0.15); /* Светло-серый с прозрачностью для сетки */
+            --chart-tick-color: var(--pico-color-grey-600); /* Цвет текста осей */
+            --chart-line-color: #6c95c7; /* Синеватый цвет для линии графика */
+        }
+
+        body {
+            background-color: var(--pico-color-grey-900);
+            color: var(--pico-color-grey-500);
+            font-size: 80%; /* Font size further reduced */
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            color: #ffffff;
+        }
+        /* Reduce heading sizes */
+        h1 { font-size: 1.8rem; }
+        h2 { font-size: 1.5rem; }
+        h3 { font-size: 1.3rem; }
+
+        /* Simple Nav Styling */
+        nav.breadcrumb { /* Added background and padding */
+            background-color: var(--pico-color-grey-800);
+            padding: 0.5rem 1rem;
+            border-radius: var(--pico-border-radius);
+            margin-bottom: 1.5rem; /* Increased bottom margin */
+        }
+        nav.breadcrumb ul {
+            padding: 0;
+            margin: 0; /* Removed bottom margin from ul */
+            list-style: none;
+        }
+        nav.breadcrumb li {
+            display: inline;
+            font-size: 0.9rem; /* Slightly smaller font for nav */
+        }
+        nav.breadcrumb li a {
+            text-decoration: none;
+            color: var(--pico-color-grey-500);
+        }
+         nav.breadcrumb li a:hover {
+             color: var(--pico-primary);
+             text-decoration: underline;
+         }
+
+
+        pre[class*="language-"] {
+            background-color: var(--pico-color-grey-800);
+            border: 1px solid var(--pico-color-grey-700);
+            border-radius: var(--pico-border-radius);
+            padding: 1em;
+            margin: 1em 0;
+            overflow: auto;
+            position: relative;
+        }
+
+        pre[class*="language-"] > code[class*="language-"] {
+            background: none;
+            padding: 0;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+
+        :not(pre) > code {
+            background-color: var(--pico-color-grey-800);
+            color: #f8f8f2;
+            padding: 0.2em 0.4em;
+            border-radius: var(--pico-border-radius);
+            font-family: var(--pico-font-family-monospace);
+            font-size: 0.9em;
+        }
+
+        div.code-toolbar > .toolbar .toolbar-item > button {
+            background: var(--pico-color-grey-700);
+            color: var(--pico-color-grey-200);
+            border: 1px solid var(--pico-color-grey-600);
+            box-shadow: none;
+            border-radius: var(--pico-border-radius);
+            padding: 0.3em 0.6em;
+            font-size: 0.8em;
+            transition: background-color 0.2s ease, border-color 0.2s ease;
+            cursor: pointer;
+        }
+        div.code-toolbar > .toolbar .toolbar-item > button:hover {
+            background: var(--pico-color-grey-600);
+            border-color: var(--pico-color-grey-500);
+        }
+        div.code-toolbar > .toolbar .toolbar-item > button:active {
+            background: var(--pico-color-grey-500);
+        }
+        div.code-toolbar > .toolbar .toolbar-item > button:focus {
+             box-shadow: 0 0 0 var(--pico-outline-width) var(--pico-primary-focus);
+             border-color: var(--pico-primary-focus);
+        }
+        div.code-toolbar > .toolbar .toolbar-item > button.copied {
+             background: var(--pico-success);
+             color: var(--pico-success-inverse);
+        }
+
+        div.code-toolbar > .toolbar .toolbar-item.language-label span {
+             background: var(--pico-secondary);
+             color: var(--pico-secondary-inverse);
+             padding: 0.2em 0.5em;
+             border-radius: var(--pico-border-radius);
+             font-size: 0.75em;
+             font-weight: bold;
+             text-transform: uppercase;
+             box-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+        }
+
+        blockquote {
+            border-left: 4px solid var(--pico-primary);
+            background-color: var(--pico-color-grey-800);
+            padding: 1em 1.5em;
+            margin-left: 0;
+            margin-right: 0;
+            color: var(--pico-color-grey-500);
+        }
+
+        blockquote p {
+            margin-bottom: 0;
+        }
+
+        /* Стили для контейнера диаграммы (оставлены на случай, если понадобятся) */
+        .chart-container {
+            background-color: var(--pico-color-grey-800);
+            padding: 1.5em;
+            border-radius: var(--pico-border-radius);
+            border: 1px solid var(--pico-color-grey-700);
+            margin-top: 2em;
+        }
+
+        /* Стили для чек-листа (оставлены на случай, если понадобятся) */
+        .checklist ul {
+            list-style: none; /* Оставляем без стандартных маркеров */
+            padding-left: 1.5em; /* Добавляем отступ для всего списка */
+            margin-top: 0.5em; /* Небольшой отступ сверху */
+        }
+        .checklist li {
+            /* Убираем стили для кастомного маркера */
+            margin-bottom: 0.8em;
+            line-height: 1.6;
+        }
+        /* Удаляем псевдоэлемент ::before */
+
+        .checklist li strong {
+            color: var(--pico-color-grey-300);
+            display: inline-block; /* Оставляем для выравнивания */
+            min-width: 220px; /* Выравнивание по ширине */
+            margin-right: 0.5em; /* Отступ справа */
+        }
+        .checklist li code { /* Стиль для плейсхолдеров */
+            color: var(--pico-color-grey-600);
+            font-style: italic;
+            background-color: transparent; /* Убираем фон для плейсхолдеров */
+            padding: 0;
+        }
+        .checklist h3 {
+            margin-top: 2em;
+            margin-bottom: 1em;
+            border-bottom: 1px solid var(--pico-color-grey-700);
+            padding-bottom: 0.3em;
+        }
+         .checklist h4 {
+            margin-top: 1.5em;
+            margin-bottom: 0.8em;
+            color: var(--pico-color-grey-300);
+        }
+        .checklist ul ul { /* Вложенные списки */
+             padding-left: 1.5em;
+             margin-top: 0.5em;
+        }
+         .checklist ul ul li strong {
+             min-width: auto; /* Убираем мин. ширину для вложенных */
+         }
+
+         /* Стили для отчета из listing-report-kinto.html */
+         .report-section ul {
+             list-style: disc; /* Используем стандартные маркеры для отчета */
+             padding-left: 2em; /* Стандартный отступ для списков */
+             margin-top: 0.5em;
+         }
+          .report-section li {
+              margin-bottom: 0.5em;
+              line-height: 1.6;
+          }
+          .report-section h2 {
+              margin-top: 2em;
+              margin-bottom: 1em;
+              border-bottom: 1px solid var(--pico-color-grey-700);
+              padding-bottom: 0.3em;
+          }
+          .report-section h3 {
+              margin-top: 1.5em;
+              margin-bottom: 0.8em;
+              color: var(--pico-color-grey-300);
+          }
+          /* Стили для таблицы */
+          .report-table table {
+              margin-top: 1.5em;
+              width: 100%;
+              margin-bottom: 1.5em; /* Добавлено для консистентности */
+          }
+          .report-table th {
+              background-color: var(--pico-color-grey-700); /* Изменено с 800 на 700 для консистентности */
+              color: #ffffff;
+          }
+          .report-table td, .report-table th {
+              border: 1px solid var(--pico-color-grey-700);
+              padding: 0.6em 0.8em;
+          }
+          .report-table tr:nth-child(even) {
+              background-color: rgba(40, 44, 52, 0.5); /* Слегка отличающийся фон для четных строк */
+          }
+          .report-table strong { /* Выделение в таблице */
+              color: var(--pico-color-grey-300);
+          }
+          /* Убираем лишние стили для базовых table/th, так как report-table переопределяет */
+          /* table { margin-top: 1.5em; margin-bottom: 1.5em; } */
+          /* th { background-color: var(--pico-color-grey-800); } */
+
+/* Styles from listings.html */
+.listing-list ul {
+    list-style: none;
+    padding-left: 0.5rem; /* Reduced left padding */
+    margin: 0;
+}
+.listing-list li {
+    margin-bottom: 0.5rem; /* Reduced space between items */
+    padding-bottom: 0.5rem; /* Reduced space below text */
+    border-bottom: 1px solid var(--pico-color-grey-700);
+}
+.listing-list li:last-child {
+     border-bottom: none;
+}
+.listing-list a {
+    text-decoration: none;
+    color: var(--pico-primary-hover);
+    font-size: 1rem; /* Reduced link font size */
+}
+.listing-list a:hover {
+    text-decoration: underline;
+    color: var(--pico-primary);
+}
