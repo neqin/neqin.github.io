@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Airdrop Report: GUNZ games (GUN)</title>
+    <!-- Pico.css CDN -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"/>
+    <!-- Prism.js Okaidia Theme CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Prism.js Toolbar CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/toolbar/prism-toolbar.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Prism.js Show Language Plugin CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/show-language/prism-show-language.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <style>
+        /* Дополнительные стили */
+        :root {
+            --pico-color-grey-900: #212529;
+            --pico-color-grey-800: #282c34;
+            --pico-color-grey-700: #495057;
+            --pico-color-grey-600: #adb5bd;
+            --pico-color-grey-500: #ced4da;
+            --chart-grid-color: rgba(206, 212, 218, 0.15); /* Светло-серый с прозрачностью для сетки */
+            --chart-tick-color: var(--pico-color-grey-600); /* Цвет текста осей */
+            --chart-line-color: #6c95c7; /* Синеватый цвет для линии графика */
+        }
+
+        body {
+            background-color: var(--pico-color-grey-900);
+            color: var(--pico-color-grey-500);
+            font-size: 90%; /* Уменьшаем базовый размер шрифта */
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            color: #ffffff;
+        }
+
+        pre[class*="language-"] {
+            background-color: var(--pico-color-grey-800);
+            border: 1px solid var(--pico-color-grey-700);
+            border-radius: var(--pico-border-radius);
+            padding: 1em;
+            margin: 1em 0;
+            overflow: auto;
+            position: relative;
+        }
+
+        pre[class*="language-"] > code[class*="language-"] {
+            background: none;
+            padding: 0;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+
+        :not(pre) > code {
+            background-color: var(--pico-color-grey-800);
+            color: #f8f8f2;
+            padding: 0.2em 0.4em;
+            border-radius: var(--pico-border-radius);
+            font-family: var(--pico-font-family-monospace);
+            font-size: 0.9em;
+        }
+
+        div.code-toolbar > .toolbar .toolbar-item > button {
+            background: var(--pico-color-grey-700);
+            color: var(--pico-color-grey-200);
+            border: 1px solid var(--pico-color-grey-600);
+            box-shadow: none;
+            border-radius: var(--pico-border-radius);
+            padding: 0.3em 0.6em;
+            font-size: 0.8em;
+            transition: background-color 0.2s ease, border-color 0.2s ease;
+            cursor: pointer;
+        }
+        div.code-toolbar > .toolbar .toolbar-item > button:hover {
+            background: var(--pico-color-grey-600);
+            border-color: var(--pico-color-grey-500);
+        }
+        div.code-toolbar > .toolbar .toolbar-item > button:active {
+            background: var(--pico-color-grey-500);
+        }
+        div.code-toolbar > .toolbar .toolbar-item > button:focus {
+             box-shadow: 0 0 0 var(--pico-outline-width) var(--pico-primary-focus);
+             border-color: var(--pico-primary-focus);
+        }
+        div.code-toolbar > .toolbar .toolbar-item > button.copied {
+             background: var(--pico-success);
+             color: var(--pico-success-inverse);
+        }
+
+        div.code-toolbar > .toolbar .toolbar-item.language-label span {
+             background: var(--pico-secondary);
+             color: var(--pico-secondary-inverse);
+             padding: 0.2em 0.5em;
+             border-radius: var(--pico-border-radius);
+             font-size: 0.75em;
+             font-weight: bold;
+             text-transform: uppercase;
+             box-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+        }
+
+        blockquote {
+            border-left: 4px solid var(--pico-primary);
+            background-color: var(--pico-color-grey-800);
+            padding: 1em 1.5em;
+            margin-left: 0;
+            margin-right: 0;
+            color: var(--pico-color-grey-500);
+        }
+
+        blockquote p {
+            margin-bottom: 0;
+        }
+
+        /* Стили для контейнера диаграммы (оставлены на случай, если понадобятся) */
+        .chart-container {
+            background-color: var(--pico-color-grey-800);
+            padding: 1.5em;
+            border-radius: var(--pico-border-radius);
+            border: 1px solid var(--pico-color-grey-700);
+            margin-top: 2em;
+        }
+
+        /* Стили для чек-листа (оставлены на случай, если понадобятся) */
+        .checklist ul {
+            list-style: none; /* Оставляем без стандартных маркеров */
+            padding-left: 1.5em; /* Добавляем отступ для всего списка */
+            margin-top: 0.5em; /* Небольшой отступ сверху */
+        }
+        .checklist li {
+            /* Убираем стили для кастомного маркера */
+            margin-bottom: 0.8em;
+            line-height: 1.6;
+        }
+        /* Удаляем псевдоэлемент ::before */
+
+        .checklist li strong {
+            color: var(--pico-color-grey-300);
+            display: inline-block; /* Оставляем для выравнивания */
+            min-width: 220px; /* Выравнивание по ширине */
+            margin-right: 0.5em; /* Отступ справа */
+        }
+        .checklist li code { /* Стиль для плейсхолдеров */
+            color: var(--pico-color-grey-600);
+            font-style: italic;
+            background-color: transparent; /* Убираем фон для плейсхолдеров */
+            padding: 0;
+        }
+        .checklist h3 {
+            margin-top: 2em;
+            margin-bottom: 1em;
+            border-bottom: 1px solid var(--pico-color-grey-700);
+            padding-bottom: 0.3em;
+        }
+         .checklist h4 {
+            margin-top: 1.5em;
+            margin-bottom: 0.8em;
+            color: var(--pico-color-grey-300);
+        }
+        .checklist ul ul { /* Вложенные списки */
+             padding-left: 1.5em;
+             margin-top: 0.5em;
+        }
+         .checklist ul ul li strong {
+             min-width: auto; /* Убираем мин. ширину для вложенных */
+         }
+
+         /* Стили для отчета из listing-report-kinto.html */
+         .report-section ul {
+             list-style: disc; /* Используем стандартные маркеры для отчета */
+             padding-left: 2em; /* Стандартный отступ для списков */
+             margin-top: 0.5em;
+         }
+          .report-section li {
+              margin-bottom: 0.5em;
+              line-height: 1.6;
+          }
+          .report-section h2 {
+              margin-top: 2em;
+              margin-bottom: 1em;
+              border-bottom: 1px solid var(--pico-color-grey-700);
+              padding-bottom: 0.3em;
+          }
+          .report-section h3 {
+              margin-top: 1.5em;
+              margin-bottom: 0.8em;
+              color: var(--pico-color-grey-300);
+          }
+          /* Стили для таблицы */
+          .report-table table {
+              margin-top: 1.5em;
+              width: 100%;
+              margin-bottom: 1.5em; /* Добавлено для консистентности */
+          }
+          .report-table th {
+              background-color: var(--pico-color-grey-700); /* Изменено с 800 на 700 для консистентности */
+              color: #ffffff;
+          }
+          .report-table td, .report-table th {
+              border: 1px solid var(--pico-color-grey-700);
+              padding: 0.6em 0.8em;
+          }
+          .report-table tr:nth-child(even) {
+              background-color: rgba(40, 44, 52, 0.5); /* Слегка отличающийся фон для четных строк */
+          }
+          .report-table strong { /* Выделение в таблице */
+              color: var(--pico-color-grey-300);
+          }
+          /* Убираем лишние стили для базовых table/th, так как report-table переопределяет */
+          /* table { margin-top: 1.5em; margin-bottom: 1.5em; } */
+          /* th { background-color: var(--pico-color-grey-800); } */
+
+    </style>
+</head>
+<body>
+    <main class="container">
+        <h1>Отчет: Подробный анализ проекта GUNZ games (GUN)</h1>
+
+        <article class="report-table">
+            <h2>Сводная таблица проекта</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Метрика</th>
+                        <th>Значение/Оценка</th>
+                        <th>Комментарий</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>IDO</td>
+                        <td>Нет</td>
+                        <td>Публичной продажи на IDO-платформах не проводилось.</td>
+                    </tr>
+                    <tr>
+                        <td>IEO</td>
+                        <td>Да (Binance Launchpool)</td>
+                        <td>400 млн GUN (4% от общего саплая) распределено через стейкинг BNB/FDUSD.</td>
+                    </tr>
+                    <tr>
+                        <td>Investors</td>
+                        <td>Очень сильные (Tier-1, Tier-2, Tier-3)</td>
+                        <td>Jump Crypto, Coinbase Ventures, Animoca Brands, Avalanche Fund и др.</td>
+                    </tr>
+                    <tr>
+                        <td>Premarkets</td>
+                        <td>Нет данных</td>
+                        <td>Отсутствует информация об активной премаркет-торговле.</td>
+                    </tr>
+                    <tr>
+                        <td>FDV</td>
+                        <td>~?? (Расчетная, зависит от цены)</td>
+                        <td>Fully Diluted Valuation, рассчитанная из Market Cap / Circ. Supply %. Высокая оценка.</td>
+                    </tr>
+                    <tr>
+                        <td>Initial Supply</td>
+                        <td>?? GUN (~6.045%)</td>
+                        <td>Начальное циркулирующее предложение на момент TGE (Token Generation Event).</td>
+                    </tr>
+                </tbody>
+            </table>
+        </article>
+
+        <article class="report-section">
+            <h2>Ключевые моменты</h2>
+            <ul>
+                <li>GUNZ games представляется перспективным проектом Layer 1, специально разработанным для игр AAA, с токеном GUN, выполняющим функции внутриигровой валюты, оплаты комиссий и стейкинга.</li>
+                <li>Общее предложение токенов составляет 10 миллиардов GUN, при этом начальное циркулирующее предложение на момент листинга оценено в 604,5 миллиона GUN (около 6,045%).</li>
+                <li>Отсутствие общедоступной информации о премаркетной торговле и ценах на ранних раундах инвестиций создает некоторую неопределенность для инвесторов при оценке стартовой цены.</li>
+                <li>Проект имеет очень сильную поддержку со стороны ведущих венчурных фондов, что указывает на высокий потенциал, но распределение токенов через Binance Launchpool может создать давление продавцов на старте.</li>
+            </ul>
+        </article>
+
+        <article class="report-section">
+            <h2>Общая информация о проекте</h2>
+            <p>GUNZ games — это блокчейн Layer 1, разработанный игровой студией Gunzilla Games специально для поддержки игр класса AAA. Платформа построена с использованием фреймворка Avalanche (как подсеть/subnet) и совместима с EVM. Она предлагает экосистему для разработчиков и игроков, потенциально включая функции KYC/AML и транзакции с оплатой газа токеном GUN. Токен GUN служит универсальной внутриигровой валютой, средством оплаты комиссий сети и используется для вознаграждения валидаторов.</p>
+        </article>
+
+        <article class="report-section">
+            <h2>Детали листинга и токеномики</h2>
+            <ul>
+                <li><strong>Запуск/Листинг:</strong> Проект был недавно запущен, токен GUN начал торговаться 31 марта 2025 года (дата может быть гипотетической/условной).</li>
+                <li><strong>Биржи:</strong> Листинг прошел на нескольких площадках, включая KuCoin и через Binance Launchpool.</li>
+                <li><strong>Общее предложение (Total Supply):</strong> 10 000 000 000 GUN.</li>
+                <li><strong>Циркулирующее предложение (Circulating Supply) на момент листинга:</strong> ~604 500 000 GUN (приблизительно 6,045% от общего предложения).</li>
+            </ul>
+        </article>
+
+        <article class="report-section">
+            <h2>Риски и потенциал</h2>
+            <h3>Риски:</h3>
+            <p>Отсутствие данных о ценах на ранних стадиях и премаркете затрудняет оценку справедливой стоимости на старте. Значительное количество токенов (400 млн GUN), распределенное через Launchpool, может привести к продажам со стороны участников, фиксирующих прибыль, создавая давление на цену в краткосрочной перспективе. Детали графика разлоков (vesting) не опубликованы, что добавляет неопределенности по будущему предложению.</p>
+            <h3>Потенциал:</h3>
+            <p>Проект имеет сильную поддержку от топовых инвесторов (Jump Crypto, Coinbase Ventures, Animoca Brands и др.) и четкую нишу (Layer 1 для AAA игр). Успех флагманской игры "Off The Grid" может значительно повысить ценность экосистемы и токена GUN. Фокус на играх высокого качества отличает его от многих других игровых блокчейнов.</p>
+        </article>
+
+        <article class="report-section">
+            <h2>Детальный анализ проекта GUNZ games (GUN)</h2>
+            <p>Этот раздел представляет собой детальный анализ проекта GUNZ games на основе предоставленных данных и дополнительной информации из интернета.</p>
+
+            <h3>1. Общая информация</h3>
+            <ul>
+                <li><strong>Краткое описание проекта:</strong> GUNZ — это специализированный Layer 1 блокчейн, совместимый с EVM и построенный с использованием фреймворка Avalanche, предназначенный для экосистемы игр класса AAA от Gunzilla Games и потенциально других разработчиков. Платформа предлагает инфраструктуру, ориентированную на нужды высокобюджетных игр, включая обработку транзакций и управление активами.</li>
+                <li><strong>Блокчейн/Платформа:</strong> Собственный Layer 1 (Avalanche Subnet), EVM-совместимый.</li>
+                <li><strong>Основные утилиты токена (GUN):</strong>
+                    <ul>
+                        <li>Универсальная внутриигровая валюта для игр в экосистеме.</li>
+                        <li>Оплата комиссий за транзакции (газ) в сети GUNZ.</li>
+                        <li>Топливо для NFT-валидаторов (механизм не детализирован).</li>
+                        <li>Вознаграждения для аппаратных валидаторов сети.</li>
+                    </ul>
+                </li>
+                <li><strong>Total Supply:</strong> 10 000 000 000 GUN.</li>
+                <li><strong>Circulating Supply на момент листинга:</strong> 604 500 000 GUN (~6,045%).</li>
+                <li><strong>График разлоков (Vesting):</strong> Конкретная информация о графиках разлоков для инвесторов, команды и других распределений не найдена в общедоступных источниках. Требуется изучение официальной документации (Whitepaper).</li>
+                <li><strong>Аудиты безопасности:</strong> Информация об аудитах смарт-контрактов или блокчейна не указана, но ожидается для проекта такого уровня с участием крупных фондов.</li>
+            </ul>
+
+            <h3>2. Инвесторы</h3>
+            <p>GUNZ привлек значительные инвестиции от ведущих венчурных фондов в крипто и игровой индустрии.</p>
+            <ul>
+                <li><strong>Ключевые фонды/инвесторы (Backers):</strong> Jump Crypto (Tier 1), Coinbase Ventures (Tier 2), CoinFund (Tier 2), HTX Ventures (Tier 2), Morningstar Ventures (Tier 2), Animoca Brands (Tier 3), Digital Strategies (Tier 3), GSR Ventures (Tier 3), MV Global (Tier 3), Raptor Capital (Tier 3), Republic Capital (Tier 3), Shima Capital (Tier 3), AlphaCrypto (NR), Blizzard (Avalanche Ecosystem Fund) (NR), Dominance (NR).</li>
+                <li><strong>Суммы инвестиций:</strong> Общая сумма привлеченных средств составляет около $101 млн в ходе 6 раундов финансирования.</li>
+                <li><strong>Цена на ранних раундах:</strong> Информация о ценах токена GUN на этапах приватных продаж не разглашается.</li>
+            </ul>
+
+            <h3>3. Премаркет и Airdrop</h3>
+            <ul>
+                <li><strong>Наличие премаркет-торговли:</strong> Нет подтвержденных данных об активной премаркет-торговле токеном GUN на крупных площадках перед официальным листингом.</li>
+                <li><strong>Наличие/планы Airdrop:</strong> Основное публичное распределение перед листингом осуществлялось через Binance Launchpool, где пользователи могли стейкать BNB и FDUSD для получения 400 миллионов токенов GUN (4% от общего предложения). Это не классический Airdrop, а скорее механизм первичного распределения через биржу.</li>
+                <li><strong>Влияние Airdrop/Launchpool на старт:</strong> Значительный объем токенов (400 млн GUN), полученных участниками Launchpool бесплатно (за стейкинг), создает потенциальное давление продавцов сразу после листинга, так как участники могут захотеть зафиксировать прибыль.</li>
+            </ul>
+
+            <h3>4. Конкуренты</h3>
+            <p>GUNZ выходит на рынок игровых блокчейнов, где уже есть установленные игроки.</p>
+            <ul>
+                <li><strong>Основные конкуренты:</strong> Ronin (RON) - экосистема Axie Infinity и смежных игр, Wax (WAX) - платформа, ориентированная на NFT и игры, Immutable (IMX) - L2 решение для NFT и игр на Ethereum.</li>
+                <li><strong>Сравнение (на основе предоставленных оценок):</strong>
+                    <div class="report-table"> <!-- Обертка для таблицы конкурентов -->
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Метрика</th>
+                                    <th>GUNZ (GUN)</th>
+                                    <th>Ronin (RON)</th>
+                                    <th>Wax (WAX)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>FDV (оценка)</td>
+                                    <td>?? *</td>
+                                    <td>$1 720 000 000</td>
+                                    <td>$398 000 000</td>
+                                </tr>
+                                <tr>
+                                    <td>Market Cap (оценка)</td>
+                                    <td>?? *</td>
+                                    <td>$1 332 888 888</td>
+                                    <td>$264 600 000</td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="4">*Оценки для GUNZ на момент листинга, основанные на начальном циркулирующем предложении и предполагаемой цене или целевых показателях.</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </li>
+                <li><strong>Ключевые отличия/преимущества GUNZ:</strong>
+                    <ul>
+                        <li>Фокус на AAA: Прямая ориентация на высокобюджетные, качественные игры, в отличие от многих платформ, фокусирующихся на более простых web3-играх.</li>
+                        <li>Собственный L1 (Subnet): Предоставляет выделенную инфраструктуру с потенциально настраиваемыми параметрами для нужд игр.</li>
+                        <li>Сильная студия-разработчик: Gunzilla Games имеет опыт в разработке традиционных AAA-игр.</li>
+                        <li>Интеграция с экосистемой Avalanche.</li>
+                    </ul>
+                </li>
+            </ul>
+
+            <h3>5. Новости (позитивные и негативные)</h3>
+            <ul>
+                <li><strong>Ключевые позитивные новости/анонсы:</strong>
+                    <ul>
+                        <li>Успешное привлечение $101 млн инвестиций от топовых фондов.</li>
+                        <li>Запуск токена на крупных биржах, включая KuCoin и Binance (через Launchpool).</li>
+                        <li>Активная разработка флагманской игры "Off The Grid" (OTG), которая должна стать витриной возможностей блокчейна GUNZ.</li>
+                        <li>Партнерство с Avalanche.</li>
+                    </ul>
+                </li>
+                <li><strong>Ключевые негативные новости/FUD/Критика:</strong> На данный момент значимых негативных новостей или серьезной критики в адрес проекта не выявлено. Основные опасения связаны с рыночными факторами (давление продавцов) и необходимостью успешного запуска игр для подтверждения ценности платформы.</li>
+                <li><strong>Общий сентимент (настроение):</strong> В целом позитивный, с элементами хайпа вокруг листинга и ожиданий от игры "Off The Grid". Сильные инвесторы и фокус на AAA-сегмент вызывают интерес у сообщества.</li>
+            </ul>
+        </article>
+
+        <article class="report-section">
+            <h2>Заключение</h2>
+            <p>GUNZ games (GUN) — амбициозный проект с сильной командой, впечатляющим списком инвесторов и четкой стратегией фокусировки на AAA-играх. Потенциал роста значителен, если команде удастся успешно запустить игру "Off The Grid" и привлечь других разработчиков на свою платформу. Однако инвесторам следует помнить о рисках, связанных с низкой начальной долей циркулирующего предложения, отсутствием данных о ранних ценах и потенциальным давлением продавцов после Launchpool. Успех проекта будет сильно зависеть от качества игр и принятия платформы игровым сообществом.</p>
+        </article>
+
+    </main>
+
+    <!-- Prism.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!-- Prism.js Autoloader Plugin -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!-- Prism.js Toolbar Plugin -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/toolbar/prism-toolbar.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!-- Prism.js Show Language Plugin -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/show-language/prism-show-language.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!-- Prism.js Copy to Clipboard Button Plugin -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+</body>
+</html>
