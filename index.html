@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Вращающаяся Галактика</title>
+    <meta name="robots" content="noindex, nofollow">
+    <title>Ничего не происходит</title>
     <style>
         /* Базовые стили */
         html, body {
@@ -56,8 +57,7 @@
 
     <!-- Основной контент страницы -->
     <div class="content">
-        <h1>Добро пожаловать!</h1>
-        <p>Это страница с анимированным фоном галактики.</p>
+        <h1>тут ничего нет</h1>
     </div>
 
     <script>
@@ -83,19 +83,31 @@
             const centerX = width / 2;
             const centerY = height / 2;
             const maxRadius = Math.min(width, height) * 0.4; // Максимальный радиус галактики
+            const specialStarColors = ['#87CEEB', '#FFA500', '#FFFF00']; // Sky Blue, Orange, Yellow
+            const specialStarProbability = 0.03; // 3% шанс стать особой звездой
 
             for (let i = 0; i < starCount; i++) {
-                // Генерируем случайный угол и радиус (смещенный к центру для эффекта диска)
+                // Генерируем случайный угол и радиус
                 const angle = Math.random() * Math.PI * 2;
-                // Math.random() * Math.random() смещает распределение к центру
                 const radius = Math.sqrt(Math.random()) * maxRadius;
 
                 const x = centerX + radius * Math.cos(angle);
                 const y = centerY + radius * Math.sin(angle);
-                const size = Math.random() * 1.5 + 0.5; // Размер звезды
-                const alpha = 0.5 + Math.random() * 0.5; // Прозрачность
 
-                stars.push({ x, y, size, alpha });
+                let size, color, alpha;
+
+                // Решаем, будет ли звезда особой
+                if (Math.random() < specialStarProbability) {
+                    size = Math.random() * 2 + 1.5; // Больший размер для особых звезд
+                    color = specialStarColors[Math.floor(Math.random() * specialStarColors.length)];
+                    alpha = 0.8 + Math.random() * 0.2; // Ярче
+                } else {
+                    size = Math.random() * 1.5 + 0.5; // Обычный размер
+                    color = `rgba(255, 255, 255, ${0.5 + Math.random() * 0.5})`; // Белый с разной прозрачностью
+                    alpha = 1; // Alpha уже в цвете rgba
+                }
+
+                stars.push({ x, y, size, color, alpha }); // Добавляем цвет
             }
         }
 
@@ -103,8 +115,16 @@
         function drawStar(star) {
             ctx.beginPath();
             ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
-            ctx.fillStyle = `rgba(255, 255, 255, ${star.alpha})`; // Белые звезды разной яркости
+            // Устанавливаем цвет и прозрачность
+            // Если цвет уже rgba, alpha игнорируется, иначе используем alpha
+            if (typeof star.color === 'string' && star.color.startsWith('rgba')) {
+                 ctx.fillStyle = star.color;
+            } else {
+                 ctx.globalAlpha = star.alpha; // Устанавливаем прозрачность для цветных звезд
+                 ctx.fillStyle = star.color;
+            }
             ctx.fill();
+            ctx.globalAlpha = 1.0; // Сбрасываем globalAlpha для других элементов
         }
 
         // Функция анимации
